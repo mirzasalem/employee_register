@@ -14,6 +14,38 @@
 </head>
 
 <body>  
+<nav class="navbar bg-body-tertiary shadow-sm p-3 mb-5 bg-white rounded">
+  <div class="container-fluid">
+
+    
+
+    {% if request.user.is_authenticated %}
+        <form method="get" class="form-inline mb-3">
+            <input
+                type="search"
+                name="search"
+                value="{{ search_query }}"
+                class="form-control mr-2"
+                placeholder="Search employee">
+            <button class="btn btn-outline-secondary" type="submit">
+                Search
+            </button>
+        </form>
+      <form method="post" action="{% url 'log_out' %}" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger">
+          Logout
+        </button>
+      </form>
+    {% else %}
+      {% comment %} <a href="{% url 'employee_login' %}" class="btn btn-outline-success">
+        Login
+      </a> {% endcomment %}
+    {% endif %}
+
+  </div>
+</nav>
+
     <div class="container">
         <div class="col-md-10.offset-md-1 mt-5">
         <div class="jumbotron">

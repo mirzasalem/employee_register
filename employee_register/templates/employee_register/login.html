@@ -1,22 +1,32 @@
-
-
-
-
 {% extends "employee_register/base.html" %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form>
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">User Name</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <div id="emailHelp" class="form-text">Should be valid email address.</div>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-  <p> Don't have account <a href ="/employee/register/">Register</a></p>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control" name="username">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" name="password">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    <p>Create an account?
+        <a href="/employee/register/">Create</a>
+    </p>
 </form>
-  {% endblock %}
+
+{% endblock %}

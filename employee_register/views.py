@@ -3,15 +3,49 @@ from .forms import EmployeeForm
 from .models import Employee
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate , login , logout
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
+@login_required(login_url= "/employee/login/")
+
+
+# def my_view(request):
 
 def employee_list(request):
-    context = {'employee_list' : Employee.objects.all()}
-    return render(request,"employee_register/employee_list.html", context)
+    query = request.GET.get('search', '')  # default empty string
+
+    if query:
+        employees = Employee.objects.filter(Q(fullname__icontains=query))
+        context = {
+            'employee_list': employees,
+            'search_query': query
+        }
+        return render(request, "employee_register/employee_list.html", context)
+    else:
+        employees = Employee.objects.all()
+        context = {
+            'employee_list': employees,
+            'search_query': query  # empty string, not None
+        }
+        return render(request, "employee_register/employee_list.html", context)
 
 
 def employee_login(request):
-    # context = {'employee_login' : Employee.objects.all()}
-    return render(request,"employee_register/login.html")
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/employee/list/')
+        else:
+            messages.error(request, "Invalid username or password")
+            return redirect('/employee/login/')
+
+    return render(request, "employee_register/login.html")
 
 def employee_register(request):
     
@@ -73,3 +107,7 @@ def employee_delete(request, id):
     employee= Employee.objects.get(pk=id)
     employee.delete()
     return redirect('/employee/list')
+
+def log_out(request):
+    logout(request)
+    return redirect('/employee/login/')
