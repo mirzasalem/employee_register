@@ -2,6 +2,11 @@
 
 
 {% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endfor %}
+{% endif %}
 <table class="table table-borderless">
     <thead class="border-bottom font-weight-bold">
         <tr>

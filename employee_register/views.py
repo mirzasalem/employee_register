@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from .forms import EmployeeForm
+from .forms import EmployeeForm, send_registration_email
 from .models import Employee
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate , login , logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required , permission_required
 from django.db.models import Q
+from django.http import HttpResponseForbidden
+
 
 @login_required(login_url= "/employee/login/")
 
@@ -14,6 +16,8 @@ from django.db.models import Q
 
 def employee_list(request):
     query = request.GET.get('search', '')  # default empty string
+    # if not request.user.groups.filter(name='admin').exists():
+    #     return HttpResponseForbidden("You are not authorized to s.Emailview this page.")
 
     if query:
         employees = Employee.objects.filter(Q(fullname__icontains=query))
@@ -73,6 +77,10 @@ def employee_register(request):
         user.set_password(password)
         user.save()
         messages.info(request, "Created successfully")
+        # send_registration_email(
+        #     to_email=user.email if user.email else "test@example.com",
+        #     username=username
+        # )
         return redirect ('/employee/register/')
     
     
@@ -104,8 +112,12 @@ def employee_form(request,id=0):
 
 
 def employee_delete(request, id):
+    if not request.user.is_staff:
+        messages.error(request, "You are not authorized to delete employees.")
+        return redirect('/employee/list')
     employee= Employee.objects.get(pk=id)
     employee.delete()
+    messages.success(request, "Employee deleted successfully.")
     return redirect('/employee/list')
 
 def log_out(request):
