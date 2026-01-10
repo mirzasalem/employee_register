@@ -65,4 +65,70 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
-Authentication & Authorization will be added soon!!!
+## 🔐 Authentication & Authorization
+
+This project uses **Django’s built-in authentication system** to ensure secure access to employee data.
+
+### Authentication
+- User **registration**, **login**, and **logout** are implemented
+- Passwords are securely stored using Django password hashing
+- Invalid login attempts display error messages
+
+### Authorization
+- Employee list view is protected using `@login_required`
+- Only **staff users** (`is_staff=True`) can delete employee records
+- Unauthorized actions are restricted with proper feedback
+
+### Security Features
+- Session-based authentication
+- Login-protected views
+- Role-based access control
+- Django messages for user notifications
+
+### Optional (Prepared)
+- Group-based authorization
+- Permission-based access control
+
+✔ Authentication and authorization are fully implemented following Django best practices.
+
+
+Here is a short, clean Markdown section you can directly add to your GitHub documentation 👇
+
+## 🖼 Static & Media Files Configuration
+
+This project uses **static files** for CSS, JavaScript, and images, and **media files** for uploaded employee images.
+
+### Static Files
+
+- **Settings:**
+```python
+STATIC_URL = '/static/img/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+Purpose: Serve CSS, JS, and static images
+```
+Location: static/ directory at the project root
+
+Media Files (Image Uploads)
+Settings:
+
+```
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+```
+Purpose: Store uploaded employee images
+
+Location: media/ directory
+
+### URL Configuration (for Development)
+To serve media files in development mode, add this to your urls.py:
+
+```
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+
+
