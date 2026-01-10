@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form action="" method="post" autocomplete="off">
+<form action="" method="post" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     {{ form.fullname|as_crispy_field }}
     {{ form.mobile|as_crispy_field }}
@@ -13,6 +13,10 @@
         <div class="col-md-8">
             {{ form.position|as_crispy_field }}
         </div>
+    <div class="mb-4">
+        <label class="form-label">Profile Image</label>
+        <input type="file" class="form-control" name="profile_image" accept="img/*">
+    </div>
     </div>
     <button type="submit" class="btn btn-primary mt-3">Submit</button>
 </form>

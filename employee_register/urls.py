@@ -2,7 +2,9 @@
 from django.urls import path, include
 from .import views
 
-
+from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.employee_form, name='employee_insert'),
@@ -11,6 +13,9 @@ urlpatterns = [
     path('list/', views.employee_list, name='employee_list'),
     path('login/', views.employee_login, name='employee_login'),
     path('register/', views.employee_register, name='employee_register'),
-    path('log_out/', views.log_out, name='log_out'),
+    path('log_out/', views.log_out, name='log_out'),#employee.profile_image.url
+    path('profile_image/', views.employee_profile_image, name='employee_profile_image'),
+    # path('employee/', include('employee_register.urls')),
+
     # path('list/', views.empl)
-]
+] 

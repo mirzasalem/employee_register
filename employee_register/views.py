@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import EmployeeForm, send_registration_email
 from .models import Employee
 from django.contrib.auth.models import User
@@ -98,10 +98,10 @@ def employee_form(request,id=0):
         return render(request,"employee_register/employee_form.html",{'form':form})
     else:
         if id==0:
-            form = EmployeeForm(request.POST)
+            form = EmployeeForm(request.POST, request.FILES)
         else:
             employee= Employee.objects.get(pk=id)
-            form = EmployeeForm(request.POST, instance=employee)
+            form = EmployeeForm(request.POST, request.FILES, instance=employee)
         if form.is_valid():
             form.save()
         return redirect('/employee/list')
@@ -123,3 +123,8 @@ def employee_delete(request, id):
 def log_out(request):
     logout(request)
     return redirect('/employee/login/')
+
+def employee_profile_image(request, id):
+    employee = get_object_or_404(Employee, id=id)
+    context = {'employee': employee}
+    return render(request, '/employee/list', context)

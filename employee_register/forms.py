@@ -7,10 +7,11 @@ class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
         # fields = '__all__'
-        fields = ('fullname', 'emp_code','mobile', 'position')
+        fields = ('fullname', 'emp_code','mobile', 'position', 'profile_image')
         labels = {
             'fullname' : 'Full Name',
-            'emp_code' : 'Employee Code'
+            'emp_code' : 'Employee Code',
+            'profile_image': 'Profile Image',
         }
     def __init__(self, *args, **kwargs):
         super(EmployeeForm, self).__init__(*args, **kwargs)

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,6 +26,19 @@ SECRET_KEY = 'django-insecure-l297unnc_!+9fc6k&@pn!*rp)_ywznbo7tr3)mygagp33*xyb+
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+STATIC_URL = '/static/img/'
+STATICFILES_DIRS = [BASE_DIR / "static"]  # If your static files are in a "static" folder in project root
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [BASE_DIR / 'static']
+
+
 
 
 # Application definition
